@@ -42,6 +42,8 @@ export const register = async (req, res) => {
           } else {
             res.cookie("token", token, {
               httpOnly: true,
+              sameSite: "none",
+              secure: true,
               maxAge: tokenExpirationTime,
             });
             res.send({ token });
@@ -73,6 +75,8 @@ export const login = async (req, res) => {
               if (!err) {
                 res.cookie("token", token, {
                   httpOnly: true,
+                  sameSite: "none",
+                  secure: true,
                   maxAge: tokenExpirationTime,
                 });
                 res.send({ token });
@@ -93,7 +97,7 @@ export const logout = async (req, res) => {
   const cookieToken = req.cookies.token;
 
   if (cookieToken) {
-    res.clearCookie("token", { httpOnly: true, maxAge: 0 });
+    res.clearCookie("token", { httpOnly: true, maxAge: 0, sameSite: "none", secure: true, });
     res.send({ mensaje: "SESION FINALIZADA CON EXITO" });
   } else {
     res.send({ mensaje: "NO EXISTEN TOKENS" });
